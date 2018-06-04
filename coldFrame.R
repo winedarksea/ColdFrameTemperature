@@ -1,11 +1,4 @@
-setwd("C:/Users/Owner/Documents/Personal/Projects/ColdFrameTemp")
-temp <- read.csv("ColdFrameTemp.csv")
-# I've got to fix a slight difference in dates
-winona <- temp[temp$Group == "Winona",]
-winona$Date <- as.POSIXct(winona$Date, format = "%m/%d/%y %H:%M")
-coldFrame <- temp[temp$Group == "ColdFrame",]
-coldFrame$Date <- as.POSIXct(coldFrame$Date, format = "%m/%d/%y %H:%M:%S")
-# write.csv(rbind(winona,coldFrame), "ColdFrameTemperatures.csv")
+setwd("C:/Users/Owner/Documents/Personal/Projects/ColdFrameTemp/ColdFrameTemperature")
 
 library(ggplot2)
 library(ggthemes)
@@ -23,6 +16,15 @@ png(filename="OverallGraph.png", width=11, height=8.5, units="in", res=300)
 g1
 dev.off()
 
+# Mins
+min(temp[temp$Group == "Winona", "TemperatureC"], na.rm = T)
+min(temp[temp$Group == "ColdFrame", "TemperatureC"], na.rm = T)
+# Zoom in
+temp2 <- temp %>% filter(Date > "2018-04-20", Date < "2018-05-10")
+g4 <- ggplot(temp2, aes(x = Date, y = TemperatureC, group = Group, color = Group)) 
+g4 <- g4 + geom_line() + theme_hc()+scale_colour_solarized("blue")
+g4
+png(filename="ZoomInGraph.png", width=11, height=8.5, units="in", res=300)
+g4
+dev.off()
 
-# difference
-# other temp
